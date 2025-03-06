@@ -18,11 +18,10 @@ export default function Header() {
         />
       </div>
       <h1 className="mb-2 text-4xl font-bold tracking-tight">
-        YouTube to Text Converter
+        YouTube Insights
       </h1>
       <p className="max-w-xl text-center text-gray-400">
-        Convert any YouTube video to text with markdown formatting. Just paste
-        the URL or video ID below.
+        Extract key insights and summaries from any YouTube video using AI
       </p>
     </div>
   );

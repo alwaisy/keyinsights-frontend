@@ -3,6 +3,58 @@
 import { useEffect, useRef, useState } from "react";
 import { cn } from "~/lib/utils";
 
+// Define the Beam class outside the useEffect
+class Beam {
+  x: number;
+  y: number;
+  height: number;
+  width: number;
+  speed: number;
+  opacity: number;
+  canvasWidth: number;
+  canvasHeight: number;
+  context: CanvasRenderingContext2D;
+
+  constructor(
+    context: CanvasRenderingContext2D,
+    canvasWidth: number,
+    canvasHeight: number,
+  ) {
+    this.context = context;
+    this.canvasWidth = canvasWidth;
+    this.canvasHeight = canvasHeight;
+    this.x = Math.random() * canvasWidth;
+    this.y = 0;
+    this.height = Math.random() * canvasHeight + 200;
+    this.width = Math.random() * 4 + 2;
+    this.speed = Math.random() * 1 + 0.2;
+    this.opacity = Math.random() * 0.5 + 0.1;
+  }
+
+  draw() {
+    this.context.beginPath();
+    const gradient = this.context.createLinearGradient(
+      this.x,
+      this.y,
+      this.x,
+      this.y + this.height,
+    );
+    gradient.addColorStop(0, `rgba(103, 103, 255, ${this.opacity})`);
+    gradient.addColorStop(1, "rgba(103, 103, 255, 0)");
+    this.context.fillStyle = gradient;
+    this.context.fillRect(this.x, this.y, this.width, this.height);
+  }
+
+  update() {
+    this.y += this.speed;
+    if (this.y > this.canvasHeight) {
+      this.y = -this.height;
+      this.x = Math.random() * this.canvasWidth;
+    }
+    this.draw();
+  }
+}
+
 export function BackgroundBeams({ className }: { className?: string }) {
   const [opacity, setOpacity] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -29,51 +81,9 @@ export function BackgroundBeams({ className }: { className?: string }) {
     const beams: Beam[] = [];
     const numberOfBeams = 20;
 
-    // Beam class
-    class Beam {
-      x: number;
-      y: number;
-      height: number;
-      width: number;
-      speed: number;
-      opacity: number;
-
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = 0;
-        this.height = Math.random() * canvas.height + 200;
-        this.width = Math.random() * 4 + 2;
-        this.speed = Math.random() * 1 + 0.2;
-        this.opacity = Math.random() * 0.5 + 0.1;
-      }
-
-      draw() {
-        context.beginPath();
-        const gradient = context.createLinearGradient(
-          this.x,
-          this.y,
-          this.x,
-          this.y + this.height,
-        );
-        gradient.addColorStop(0, `rgba(103, 103, 255, ${this.opacity})`);
-        gradient.addColorStop(1, "rgba(103, 103, 255, 0)");
-        context.fillStyle = gradient;
-        context.fillRect(this.x, this.y, this.width, this.height);
-      }
-
-      update() {
-        this.y += this.speed;
-        if (this.y > canvas.height) {
-          this.y = -this.height;
-          this.x = Math.random() * canvas.width;
-        }
-        this.draw();
-      }
-    }
-
     // Initialize beams
     for (let i = 0; i < numberOfBeams; i++) {
-      beams.push(new Beam());
+      beams.push(new Beam(context, canvas.width, canvas.height));
     }
 
     // Animation loop

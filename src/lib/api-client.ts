@@ -1,6 +1,8 @@
 // lib/api-client.ts
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+import { env } from "~/env";
+
+const API_BASE_URL = env.NEXT_PUBLIC_API_BASE_URL;
 
 export interface TranscriptRequest {
   video_id: string;
@@ -38,6 +40,17 @@ export interface ProcessingStatusResponse {
 export interface ErrorResponse {
   detail: string;
   error_code?: string;
+}
+
+export interface RateLimitInfo {
+  current_usage: number;
+  limit: number;
+  remaining: number;
+  reset_at: string;
+  reset_in_seconds: number;
+  reset_in_minutes: number;
+  reset_in_time: string;
+  percentage_used: number;
 }
 
 // Function to extract video ID from YouTube URL
@@ -109,4 +122,17 @@ export async function getProcessingResult(
   }
 
   return (await response.json()) as CombinedResponse;
+}
+
+export async function getRateLimits(): Promise<RateLimitInfo> {
+  const response = await fetch(`${API_BASE_URL}/limits`);
+
+  console.log(response, "response");
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch rate limits: ${response.status}`);
+  }
+
+  // Fix: Add explicit type assertion to the response
+  return (await response.json()) as RateLimitInfo;
 }
