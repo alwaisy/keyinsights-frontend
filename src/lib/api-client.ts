@@ -55,7 +55,6 @@ export function extractVideoId(url: string): string | null {
 }
 
 // Function to start combined processing
-// Function to start combined processing
 export async function startCombinedProcessing(
   input: string,
 ): Promise<ProcessingStatusResponse> {
