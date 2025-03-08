@@ -1,12 +1,11 @@
 // components/landing/Hero.tsx
 "use client";
 
-import { ArrowRight, PlayCircle } from "lucide-react";
+import { PlayCircle } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { BackgroundBeams } from "~/components/ui/background-beams";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
 import { SparklesCore } from "~/components/ui/sparkles";
 import { TextGenerateEffect } from "~/components/ui/text-generate-effect";
 
@@ -43,7 +42,7 @@ export default function LandingHero() {
         </p>
 
         <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <div className="relative w-full max-w-md flex-1">
+          {/* <div className="relative w-full max-w-md flex-1">
             <Input
               placeholder="Paste YouTube URL here..."
               className="w-full rounded-lg border-zinc-800 bg-zinc-900/80 px-4 py-6 text-white"
@@ -53,13 +52,11 @@ export default function LandingHero() {
             <div className="absolute inset-y-0 right-0 flex items-center pr-3">
               <ArrowRight className="h-5 w-5 text-purple-500" />
             </div>
-          </div>
+          </div> */}
 
           <Link
             href={
-              videoUrl
-                ? `/insights?url=${encodeURIComponent(videoUrl)}`
-                : "/insights"
+              videoUrl ? `/app?url=${encodeURIComponent(videoUrl)}` : "/app"
             }
           >
             <Button
